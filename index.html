@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConectaTech | Conectando tu mundo tecnologico</title>
-   <link rel="icon" type="image/png" href="assets/img/logoCT.png">
+    <title>ConectaTech | Conectando tu mundo tecnológico</title>
+    <link rel="icon" type="image/png" href="./assets/img/logoCT.png?v=3">
+    
     <meta property="og:title" content="ConectaTech | Accesorios Apple y Periféricos">
     <meta property="og:description" content="Tu proveedor de confianza para tecnología en Cumaná. ¡Descubre nuestro catálogo!">
-    <meta property="og:image" content="assets/img/logoCT.png"> 
+    <meta property="og:image" content="./assets/img/logoCT.png"> 
     <meta property="og:type" content="website">
-<style>
-    :root {
-        --nike-black: #1d1d1f;       
-        --nike-gray: #f5f5f7;        
-        --white: #ffffff;            
-        --text-muted: #86868b;       
-        --whatsapp-green: #25D366;   
-          }
+    <style>
+        :root {
+            --nike-black: #1d1d1f;       
+            --nike-gray: #f5f5f7;        
+            --white: #ffffff;            
+            --text-muted: #86868b;       
+            --whatsapp-green: #25D366;   
+        }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f9f9f9; color: var(--nike-black); overflow-x: hidden; }
@@ -25,11 +26,13 @@
         .top-bar { background-color: #111; color: white; font-size: 11px; text-align: center; padding: 8px; font-weight: 500; }
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #ffffff; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .logo { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: 1px; text-decoration: none; color: #000; }
-        .logo img {
-                     height: 45px; 
-                     width: auto;  
-                      display: block;
-                    }
+        .logo img { height: 45px; width: auto; display: block; }
+        
+        /* Nuevo contenedor para agrupar Instagram y Carrito */
+        .header-actions { display: flex; align-items: center; gap: 18px; }
+        .ig-btn { color: var(--nike-black); transition: all 0.3s ease; display: flex; align-items: center; }
+        .ig-btn:hover { transform: scale(1.15); color: #E1306C; } /* Color oficial de IG al pasar el mouse */
+
         .icon-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #333; }
         .cart-btn { background: none; border: none; font-size: 24px; cursor: pointer; position: relative; display: inline-block; }
         .cart-badge { position: absolute; top: -5px; right: -10px; background-color: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: bold; }
@@ -195,14 +198,24 @@
 
     <header class="main-header">
         <button id="menu-btn" class="icon-btn">☰</button>
-       <a href="#" class="logo">
-    <img src="logoCT.png" alt="ConectaTech" class="logo-tienda">
-</a>
+        <a href="#" class="logo">
+            <img src="./assets/img/logoCT.png?v=3" alt="ConectaTech" class="logo-tienda">
+        </a>
         
-        <button class="cart-btn" onclick="toggleCart()">
-            <span id="cart-icon-inner" style="display:inline-block;">🛒</span> 
-            <span class="cart-badge" id="cart-count">0</span>
-        </button>
+        <div class="header-actions">
+            <a href="https://instagram.com/conectatechve" target="_blank" class="ig-btn" title="Síguenos en Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
+            </a>
+            
+            <button class="cart-btn" onclick="toggleCart()">
+                <span id="cart-icon-inner" style="display:inline-block;">🛒</span> 
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
     </header>
 
     <div id="sidebar-menu" class="sidebar">
@@ -210,13 +223,13 @@
             <h2>CATEGORÍAS</h2>
             <button id="close-btn" class="icon-btn">✕</button>
         </div>
-     <ul class="category-list">
-    <li><a href="#" onclick="filtrarCategoria('Todas'); return false;">🔥 Todo el Catálogo</a></li>
-    <li><a href="#" onclick="filtrarCategoria('Cables Lightning y USB'); return false;">🔌 Cables Lightning y USB</a></li>
-    <li><a href="#" onclick="filtrarCategoria('Cubos y Cargadores'); return false;">⚡ Cubos y Cargadores</a></li>
-    <li><a href="#" onclick="filtrarCategoria('Audifonos'); return false;">🎧 Audífonos</a></li>
-    <li><a href="#" onclick="filtrarCategoria('Forros y Accesorios'); return false;">📱 Forros y Accesorios</a></li>
-</ul>
+        <ul class="category-list">
+            <li><a href="#" onclick="filtrarCategoria('Todas'); return false;">🔥 Todo el Catálogo</a></li>
+            <li><a href="#" onclick="filtrarCategoria('Cables Lightning y USB'); return false;">🔌 Cables Lightning y USB</a></li>
+            <li><a href="#" onclick="filtrarCategoria('Cubos y Cargadores'); return false;">⚡ Cubos y Cargadores</a></li>
+            <li><a href="#" onclick="filtrarCategoria('Audifonos'); return false;">🎧 Audífonos</a></li>
+            <li><a href="#" onclick="filtrarCategoria('Forros y Accesorios'); return false;">📱 Forros y Accesorios</a></li>
+        </ul>
     </div>
     <div id="menu-overlay" class="overlay-menu"></div>
 
@@ -225,11 +238,11 @@
     </div>
 
     <main class="container" id="catalogo-container">
-        </main>
+    </main>
     
     <div id="toast-container"></div>
     
-<footer class="main-footer">
+    <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-brand">
                 <h3>CONECTATECH</h3>
@@ -374,7 +387,6 @@
                 <div class="product-grid">
                     ${productosDeEstaCategoria.map(p => {
                         const estaAgotado = p.stock === 0;
-                        // CORRECCIÓN CLAVE 1: Usamos _id de MongoDB y lo encerramos en comillas simples
                         const idSeguro = p._id || p.id;
                         return `
                         <div class="card" onclick="${estaAgotado ? '' : `abrirDetalles('${idSeguro}')`}" style="cursor: ${estaAgotado ? 'not-allowed' : 'pointer'}">
@@ -385,7 +397,7 @@
                             <div class="card-info">
                                 <div class="card-title">${p.name}</div>
                                 <div style="display:flex; justify-content:space-between; align-items:end; margin-top:5px;">
-                                    <div class="card-price">$${p.price.toFixed(2)}</div>
+                                    <div class="card-price">$${(p.price || 0).toFixed(2)}</div>
                                     <div style="color:gray; font-size:0.75rem;">Disponible</div>
                                 </div>
                                 <div class="card-detail-text">VER DETALLES</div>
@@ -418,28 +430,26 @@
         document.getElementById('sidebar-menu').classList.remove('active');
         document.getElementById('menu-overlay').classList.remove('active');
     }
-// Función para mostrar el cartelito
-        function mostrarToast(mensaje) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerText = mensaje;
-            container.appendChild(toast);
-            
-            // Animación de entrada
-            setTimeout(() => toast.classList.add('show'), 10);
-            
-            // Desaparece a los 2.5 segundos
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
-        }
+
+    function mostrarToast(mensaje) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerText = mensaje;
+        container.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('show'), 10);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
     // --- LÓGICA DE DETALLES DE PRODUCTO (MODAL) ---
     let productoActualModal = null;
     let cantidadModal = 1;
 
-    // CORRECCIÓN CLAVE 2: La función ahora busca por _id
     function abrirDetalles(idBuscado) {
         const prod = productosGlobales.find(p => String(p._id || p.id) === String(idBuscado));
         if(!prod || prod.stock === 0) return; 
@@ -449,9 +459,9 @@
 
         document.getElementById('pd-img').src = prod.img;
         document.getElementById('pd-title').innerText = prod.name;
-        document.getElementById('pd-price-box').innerText = `consulte precio especial — $${prod.price.toFixed(2)}`;
+        document.getElementById('pd-price-box').innerText = `consulte precio especial — $${(prod.price || 0).toFixed(2)}`;
         document.getElementById('pd-qty').innerText = cantidadModal;
-        document.getElementById('pd-subtotal').innerText = `$${prod.price.toFixed(2)}`;
+        document.getElementById('pd-subtotal').innerText = `$${(prod.price || 0).toFixed(2)}`;
 
         const contenedorCaracteristicas = document.querySelector('.pm-features');
         
@@ -477,12 +487,11 @@
         if(cantidadModal + delta >= 1) {
             cantidadModal += delta;
             document.getElementById('pd-qty').innerText = cantidadModal;
-            const subtotal = cantidadModal * productoActualModal.price;
+            const subtotal = cantidadModal * (productoActualModal.price || 0);
             document.getElementById('pd-subtotal').innerText = `$${subtotal.toFixed(2)}`;
         }
     }
 
-    // CORRECCIÓN CLAVE 3: Identificar en el carrito usando _id
     function agregarDesdeModal() {
         const idActual = productoActualModal._id || productoActualModal.id;
         const inCart = cart.find(i => String(i._id || i.id) === String(idActual));
@@ -518,18 +527,17 @@
                     <img src="${item.img}" class="cart-item-img">
                     <div style="flex-grow:1;">
                         <div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
-                        <div style="font-size:0.8rem;">$${item.price.toFixed(2)} x ${item.qty}</div>
+                        <div style="font-size:0.8rem;">$${(item.price || 0).toFixed(2)} x ${item.qty}</div>
                     </div>
                     <button class="delete-btn" onclick="animarYEliminar(event, '${itemId}')">🗑️</button>
                 </div>
                 `
             }).join('');
         }
-        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        const total = cart.reduce((s, i) => s + ((i.price || 0) * i.qty), 0);
         document.getElementById('cart-total-price').innerText = `$${total.toFixed(2)}`;
     }
 
-    // CORRECCIÓN CLAVE 5: Filtro de eliminación usando _id
     function animarYEliminar(event, idBuscado) {
         const btn = event.target;
         btn.classList.add('anim-papelera'); 
@@ -557,7 +565,7 @@
 
     function abrirCheckout() {
         if(cart.length === 0) return alert("Tu carrito está vacío.");
-        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        const total = cart.reduce((s, i) => s + ((i.price || 0) * i.qty), 0);
         document.getElementById('chk-total').innerText = `$${total.toFixed(2)}`;
         
         toggleCart(); 
@@ -596,9 +604,9 @@
         lineas.push(""); 
 
         cart.forEach(item => {
-            lineas.push(`- ${item.qty}x ${item.name} ($${item.price.toFixed(2)})`);
+            lineas.push(`- ${item.qty}x ${item.name} ($${(item.price || 0).toFixed(2)})`);
         });
-        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const total = cart.reduce((sum, item) => sum + ((item.price || 0) * item.qty), 0);
 
         lineas.push(""); 
         lineas.push(`*TOTAL A PAGAR: $${total.toFixed(2)}*`);
@@ -611,10 +619,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      // --- INICIO DE CARGA DE PRODUCTOS ---
         const catalogo = document.getElementById('catalogo-container');
         
-        // Ponemos a dar vueltas el circulito mientras Render despierta
         catalogo.innerHTML = `
             <div class="loader-container">
                 <div class="spinner"></div>
@@ -649,6 +655,6 @@
             overlayMenu.addEventListener('click', toggleMenu);
         }
     });
-</script>
+    </script>
 </body>
 </html>
