@@ -1,0 +1,654 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConectaTech | Conectando tu mundo tecnologico</title>
+    <link rel="icon" type="image/png" href="logoCT.png?v=2">
+    <meta property="og:title" content="ConectaTech | Accesorios Apple y Periféricos">
+    <meta property="og:description" content="Tu proveedor de confianza para tecnología en Cumaná. ¡Descubre nuestro catálogo!">
+    <meta property="og:image" content="logoCT.png"> 
+    <meta property="og:type" content="website">
+<style>
+    :root {
+        --nike-black: #1d1d1f;       
+        --nike-gray: #f5f5f7;        
+        --white: #ffffff;            
+        --text-muted: #86868b;       
+        --whatsapp-green: #25D366;   
+          }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f9f9f9; color: var(--nike-black); overflow-x: hidden; }
+
+        /* --- ESTILOS DE NAVEGACIÓN --- */
+        .top-bar { background-color: #111; color: white; font-size: 11px; text-align: center; padding: 8px; font-weight: 500; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #ffffff; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: 1px; text-decoration: none; color: #000; }
+        .logo img {
+                     height: 45px; 
+                     width: auto;  
+                      display: block;
+                    }
+        .icon-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #333; }
+        .cart-btn { background: none; border: none; font-size: 24px; cursor: pointer; position: relative; display: inline-block; }
+        .cart-badge { position: absolute; top: -5px; right: -10px; background-color: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: bold; }
+
+        /* Menú Lateral */
+        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background-color: white; z-index: 200; transition: 0.4s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.1); }
+        .sidebar.active { left: 0; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #eee; }
+        .sidebar-header h2 { font-size: 16px; margin: 0; letter-spacing: 2px; }
+        .category-list { list-style: none; padding: 0; margin: 0; }
+        .category-list li a { display: block; padding: 18px 20px; color: #111; text-decoration: none; border-bottom: 1px solid #f5f5f5; font-weight: 600; font-size: 15px; }
+        .overlay-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .overlay-menu.active { opacity: 1; visibility: visible; }
+
+        /* Buscador */
+        .search-container { margin: 20px auto 30px auto; text-align: center; padding: 0 20px; max-width: 1200px;}
+        #search-input { width: 100%; max-width: 500px; padding: 15px 20px; border-radius: 25px; border: 1px solid #ddd; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); outline: none; transition: all 0.3s ease; }
+        #search-input:focus { border-color: var(--nike-black); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        /* --- ESTILOS DE CATEGORÍAS Y TARJETAS MINIMALISTAS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; padding-bottom: 100px; }
+        .category-section { margin-bottom: 45px; }
+        .category-header { margin-bottom: 20px; }
+        .category-title-wrapper { display: flex; align-items: center; gap: 10px; }
+        .category-bar { width: 4px; height: 22px; background-color: var(--nike-black); border-radius: 2px; }
+        .category-title { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin: 0; letter-spacing: 0.5px;}
+        .category-count { font-size: 0.85rem; color: #777; margin-left: 14px; margin-top: 4px; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .card { background: var(--white); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #eee;}
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .card-img-container { width: 100%; height: 250px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .card img { max-width: 100%; max-height: 100%; object-fit: cover; }
+        .card-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-title { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;}
+        .card-price { font-size: 1.2rem; font-weight: 800; }
+        .card-detail-text { text-align: center; margin-top: 15px; font-size: 0.75rem; font-weight: 700; color: #aaa; letter-spacing: 1px; }
+        .badge-agotado { position: absolute; background-color: #d9534f; color: white; padding: 8px 20px; border-radius: 25px; font-weight: 800; font-size: 1rem; letter-spacing: 1px; z-index: 10; }
+
+        /* --- VISTA DE DETALLES DEL PRODUCTO (LA CALCULADORA) --- */
+        .product-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); }
+        .product-modal.open { transform: translateY(0); }
+        .pm-close { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+        .pm-img { width: 100%; height: 350px; object-fit: contain; background: #f5f5f5; }
+        .pm-body { padding: 20px; padding-bottom: 30px; }
+        .pm-title { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+        .pm-badge { display: inline-block; background: #f4f4f4; padding: 6px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 20px; border: 1px solid #e0e0e0; letter-spacing: 0.5px; }
+        .pm-section-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 10px; color: #333; }
+        .pm-price-box { background: #e8e8e8; padding: 15px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; border: 1px solid #ccc; color: #111; }
+        .pm-qty-container { display: flex; align-items: center; gap: 15px; margin-bottom: 5px; }
+        .pm-qty-btn { width: 45px; height: 45px; border: none; border-radius: 10px; background: #e8e8e8; font-size: 1.5rem; cursor: pointer; font-weight: 600; color: #111; transition: background 0.2s;}
+        .pm-qty-btn:active { background: #ccc; }
+        .pm-qty-number { font-size: 1.5rem; font-weight: 800; width: 40px; text-align: center; }
+        .pm-subtotal-box { background: #f0f0f0; padding: 15px; border-radius: 12px; margin: 20px 0; border: 1px solid #e0e0e0; }
+        .pm-subtotal-label { font-size: 0.8rem; color: #666; margin-bottom: 5px; font-weight: 600; }
+        .pm-subtotal-val { font-size: 1.8rem; font-weight: 900; }
+        .pm-features { background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 12px; }
+        .pm-feature-item { margin-bottom: 8px; font-size: 0.9rem; color: #444; font-weight: 600; }
+        .pm-footer { width: 100%; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; }
+        .pm-add-btn { width: 100%; background: var(--nike-black); color: white; padding: 16px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; border: none; cursor: pointer; }
+
+        /* --- CARRO Y CHECKOUT --- */
+        .cart-panel { position: fixed; top: 0; right: -400px; width: 400px; max-width: 100%; height: 100%; background: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.3s ease; display: flex; flex-direction: column; padding: 20px; }
+        .cart-panel.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .cart-items { flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0; align-items: center; }
+        .cart-item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; background: #eee;}
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
+        .overlay.open { display: block; }
+        .btn-whatsapp { background-color: var(--whatsapp-green); color: white; margin-top: 15px; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;}
+        
+        .checkout-container { position: fixed; bottom: -100%; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; border-radius: 20px 20px 0 0; padding: 25px; z-index: 2500; transition: bottom 0.4s ease; box-shadow: 0 -10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .checkout-container.open { bottom: 0; }
+        .checkout-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .checkout-header h3 { font-size: 1.2rem; margin: 0; font-weight: 800; }
+        .form-row { display: flex; gap: 15px; }
+        .form-group { flex: 1; margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; color: #555; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; transition: border 0.3s; }
+        .form-group input:focus { border-color: var(--nike-black); }
+         h4 { font-size: 0.95rem; font-weight: 800; margin: 20px 0 10px 0; color: #333; }
+        .payment-grid, .delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .opt-btn { padding: 12px; border: 1px solid #ddd; background: #f9f9f9; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #555; font-size: 0.9rem; }
+        .opt-btn.active { border-color: var(--nike-black); background: var(--nike-black); color: white; }
+
+        @keyframes salto { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        @keyframes temblar { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+        @keyframes papeleraVibrar { 0% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(20deg) scale(1.3); } 50% { transform: rotate(-20deg) scale(1.3); } 100% { transform: rotate(0deg) scale(1); } }
+        .anim-add { animation: salto 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; }
+        .anim-remove { animation: temblar 0.3s linear !important; }
+        .anim-papelera { animation: papeleraVibrar 0.4s ease !important; color: red !important; }
+        .delete-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s; }
+        .delete-btn:hover { transform: scale(1.2); }
+
+        /* --- BOTÓN FLOTANTE DE WHATSAPP --- */
+        .floating-wa { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: var(--whatsapp-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; transition: transform 0.3s; text-decoration: none;}
+        .floating-wa:hover { transform: scale(1.1); }
+        .floating-wa img { width: 35px; height: 35px; filter: brightness(0) invert(1); }
+
+        /* --- FOOTER CORPORATIVO --- */
+        .main-footer { 
+            background-color: var(--nike-black); 
+            color: var(--white); 
+            padding: 50px 20px 20px 20px; 
+            margin-top: auto; 
+        }
+        .footer-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            gap: 30px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 30px; 
+            margin-bottom: 20px; 
+        }
+        .footer-brand h3 { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 10px; 
+        }
+        .footer-brand p { 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            max-width: 300px; 
+            line-height: 1.5;
+        }
+        .footer-info p { 
+            font-size: 0.9rem; 
+            margin-bottom: 10px; 
+            color: #cccccc; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-bottom { 
+            text-align: center; 
+            font-size: 0.8rem; 
+            color: var(--text-muted); 
+            letter-spacing: 0.5px;
+        }
+        /* --- ANIMACIÓN DE CARGA (LOADER) --- */
+        .loader-container { text-align: center; padding: 60px 20px; width: 100%; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #e0e0e0; border-top: 4px solid var(--nike-black); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loader-text { font-size: 1.1rem; font-weight: 800; color: var(--nike-black); margin-bottom: 8px;}
+        .loader-sub { font-size: 0.85rem; color: var(--text-muted); }
+        
+        /* --- NOTIFICACIONES TOAST --- */
+        #toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 4000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background-color: var(--nike-black); color: var(--white); padding: 12px 25px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,0.2); opacity: 0; transform: translateY(20px); transition: all 0.3s ease; text-align: center; white-space: nowrap; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span>💳 Pagos: Pago Móvil, Zelle, Binance | 📍 Entregas en Cumaná y envíos nacionales</span>
+    </div>
+
+    <header class="main-header">
+        <button id="menu-btn" class="icon-btn">☰</button>
+       <a href="#" class="logo">
+    <img src="logoCT.png" alt="ConectaTech" class="logo-tienda">
+</a>
+        
+        <button class="cart-btn" onclick="toggleCart()">
+            <span id="cart-icon-inner" style="display:inline-block;">🛒</span> 
+            <span class="cart-badge" id="cart-count">0</span>
+        </button>
+    </header>
+
+    <div id="sidebar-menu" class="sidebar">
+        <div class="sidebar-header">
+            <h2>CATEGORÍAS</h2>
+            <button id="close-btn" class="icon-btn">✕</button>
+        </div>
+     <ul class="category-list">
+    <li><a href="#" onclick="filtrarCategoria('Todas'); return false;">🔥 Todo el Catálogo</a></li>
+    <li><a href="#" onclick="filtrarCategoria('Cables Lightning y USB'); return false;">🔌 Cables Lightning y USB</a></li>
+    <li><a href="#" onclick="filtrarCategoria('Cubos y Cargadores'); return false;">⚡ Cubos y Cargadores</a></li>
+    <li><a href="#" onclick="filtrarCategoria('Audifonos'); return false;">🎧 Audífonos</a></li>
+    <li><a href="#" onclick="filtrarCategoria('Forros y Accesorios'); return false;">📱 Forros y Accesorios</a></li>
+</ul>
+    </div>
+    <div id="menu-overlay" class="overlay-menu"></div>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="🔍 Buscar producto..." onkeyup="buscarProductos()">
+    </div>
+
+    <main class="container" id="catalogo-container">
+        </main>
+    
+    <div id="toast-container"></div>
+    
+<footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>CONECTATECH</h3>
+                <p>Tu proveedor de confianza para accesorios tecnológicos y periféricos de alta calidad. Conectando tu mundo, un cable a la vez.</p>
+            </div>
+            <div class="footer-info">
+                <p>📍 Entregas presenciales en Cumaná</p>
+                <p>📦 Envíos a nivel nacional</p>
+                <p>📱 WhatsApp: 0422-8959934</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ConectaTech. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <a href="https://wa.me/584228959934" class="floating-wa" target="_blank">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z'/></svg>" alt="WhatsApp">
+    </a>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button onclick="toggleCart()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container"></div>
+        <div style="border-top:2px solid #000; padding-top:20px; margin-top: auto;">
+            <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.2rem;">
+                <span>Total Estimado:</span> <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="btn-whatsapp" onclick="abrirCheckout()">💳 Ir a Pagar</button>
+        </div>
+    </div>
+
+    <div id="product-detail-modal" class="product-modal">
+        <button class="pm-close" onclick="cerrarDetalles()">✕</button>
+        <img id="pd-img" src="" class="pm-img">
+        <div class="pm-body">
+            <div id="pd-title" class="pm-title">NOMBRE DEL PRODUCTO</div>
+            <div class="pm-badge">🛡️ PRODUCTOS CERTIFICADOS</div>
+            <div class="pm-section-title">🏷️ Opciones de precio</div>
+            <div class="pm-price-box" id="pd-price-box">A partir de 1 U — $0.00</div>
+            <div class="pm-section-title" style="margin-top: 20px;">Cantidad</div>
+            <div class="pm-qty-container">
+                <button class="pm-qty-btn" onclick="cambiarCantidadModal(-1)">−</button>
+                <div id="pd-qty" class="pm-qty-number">1</div>
+                <button class="pm-qty-btn" onclick="cambiarCantidadModal(1)">+</button>
+            </div>
+            <div style="font-size: 0.75rem; color: gray; margin-bottom: 20px;">Mín: 1 u</div>
+            <div class="pm-subtotal-box">
+                <div class="pm-subtotal-label">Subtotal</div>
+                <div id="pd-subtotal" class="pm-subtotal-val">$0.00</div>
+            </div>
+            <div class="pm-section-title">CARACTERÍSTICAS</div>
+            <div class="pm-features">
+                <div class="pm-feature-item">✅ Calidad Garantizada</div>
+                <div class="pm-feature-item">✅ Empaque Sellado</div>
+                <div class="pm-feature-item">✅ Entrega Segura</div>
+            </div>
+        </div>
+        <div class="pm-footer">
+            <button class="pm-add-btn" onclick="agregarDesdeModal()">🛒 Agregar al Carrito</button>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="checkout-container">
+        <div class="checkout-header">
+            <h3>🛒 DETALLES DE COMPRA</h3>
+            <button onclick="cerrarCheckout()" class="icon-btn">✕</button>
+        </div>
+        <div class="checkout-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" id="chk-nombre" placeholder="Tu nombre">
+                </div>
+                <div class="form-group">
+                    <label>Apellido *</label>
+                    <input type="text" id="chk-apellido" placeholder="Tu apellido">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Teléfono *</label>
+                <input type="text" id="chk-telefono" placeholder="04XX-XXXXXXX">
+            </div>
+
+            <h4>💳 MÉTODO DE PAGO</h4>
+            <div class="payment-grid" id="payment-options">
+                <button class="opt-btn active" onclick="seleccionarOpcion('pago', this, 'Pago Móvil')">Pago Móvil</button>
+                <button class="opt-btn" onclick="seleccionarOpcion('pago', this, 'Efectivo $')">Efectivo $</button>
+                <button class="opt-btn" onclick="seleccionarOpcion('pago', this, 'Zelle')">Zelle</button>
+                <button class="opt-btn" onclick="seleccionarOpcion('pago', this, 'Binance')">Binance</button>
+            </div>
+
+            <h4>🚚 TIPO DE ENTREGA</h4>
+            <div class="delivery-grid" id="delivery-options">
+                <button class="opt-btn active" onclick="seleccionarOpcion('entrega', this, 'Entrega Presencial')">📍 Entrega Presencial</button>
+                <button class="opt-btn" onclick="seleccionarOpcion('entrega', this, 'Envío Nacional')">📦 Envío Nacional</button>
+            </div>
+        </div>
+        <div class="checkout-footer">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin: 20px 0 15px 0;">
+                <span>Total a Pagar:</span>
+                <span id="chk-total">$0.00</span>
+            </div>
+            <button class="btn-whatsapp" onclick="enviarPedidoFinal()">💬 Enviar Pedido por WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+      let cart = [];
+      let productosGlobales = []; 
+
+    // --- RENDERIZADO AGRUPADO POR CATEGORÍAS ---
+    function renderProducts(listaAMostrar = productosGlobales) {
+        const container = document.getElementById('catalogo-container');
+        
+        if (listaAMostrar.length === 0) {
+            container.innerHTML = "<p style='text-align:center; width:100%; color:gray; font-weight:600; margin-top:20px;'>No encontramos coincidencias.</p>";
+            return;
+        }
+
+        const categoriasUnicas = [...new Set(listaAMostrar.map(p => p.category))];
+        let htmlHTML = '';
+
+        categoriasUnicas.forEach(categoria => {
+            const productosDeEstaCategoria = listaAMostrar.filter(p => p.category === categoria);
+            const cantidadText = productosDeEstaCategoria.length === 1 ? '1 producto' : `${productosDeEstaCategoria.length} productos`;
+
+            htmlHTML += `
+            <div class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-bar"></div>
+                        <h3 class="category-title">${categoria}</h3>
+                    </div>
+                    <div class="category-count">${cantidadText}</div>
+                </div>
+                
+                <div class="product-grid">
+                    ${productosDeEstaCategoria.map(p => {
+                        const estaAgotado = p.stock === 0;
+                        // CORRECCIÓN CLAVE 1: Usamos _id de MongoDB y lo encerramos en comillas simples
+                        const idSeguro = p._id || p.id;
+                        return `
+                        <div class="card" onclick="${estaAgotado ? '' : `abrirDetalles('${idSeguro}')`}" style="cursor: ${estaAgotado ? 'not-allowed' : 'pointer'}">
+                            <div class="card-img-container">
+                                <img src="${p.img}" alt="${p.name}">
+                                ${estaAgotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
+                            </div>
+                            <div class="card-info">
+                                <div class="card-title">${p.name}</div>
+                                <div style="display:flex; justify-content:space-between; align-items:end; margin-top:5px;">
+                                    <div class="card-price">$${p.price.toFixed(2)}</div>
+                                    <div style="color:gray; font-size:0.75rem;">Disponible</div>
+                                </div>
+                                <div class="card-detail-text">VER DETALLES</div>
+                            </div>
+                        </div>
+                        `
+                    }).join('')}
+                </div>
+            </div>
+            `;
+        });
+
+        container.innerHTML = htmlHTML;
+    }
+
+    function buscarProductos() {
+        const texto = document.getElementById('search-input').value.toLowerCase();
+        const productosFiltrados = productosGlobales.filter(p => p.name.toLowerCase().includes(texto));
+        renderProducts(productosFiltrados);
+    }
+
+    function filtrarCategoria(categoria) {
+        let productosFiltrados;
+        if(categoria === 'Todas') {
+            productosFiltrados = productosGlobales;
+        } else {
+            productosFiltrados = productosGlobales.filter(p => p.category === categoria);
+        }
+        renderProducts(productosFiltrados);
+        document.getElementById('sidebar-menu').classList.remove('active');
+        document.getElementById('menu-overlay').classList.remove('active');
+    }
+// Función para mostrar el cartelito
+        function mostrarToast(mensaje) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = mensaje;
+            container.appendChild(toast);
+            
+            // Animación de entrada
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Desaparece a los 2.5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+    // --- LÓGICA DE DETALLES DE PRODUCTO (MODAL) ---
+    let productoActualModal = null;
+    let cantidadModal = 1;
+
+    // CORRECCIÓN CLAVE 2: La función ahora busca por _id
+    function abrirDetalles(idBuscado) {
+        const prod = productosGlobales.find(p => String(p._id || p.id) === String(idBuscado));
+        if(!prod || prod.stock === 0) return; 
+
+        productoActualModal = prod;
+        cantidadModal = 1; 
+
+        document.getElementById('pd-img').src = prod.img;
+        document.getElementById('pd-title').innerText = prod.name;
+        document.getElementById('pd-price-box').innerText = `consulte precio especial — $${prod.price.toFixed(2)}`;
+        document.getElementById('pd-qty').innerText = cantidadModal;
+        document.getElementById('pd-subtotal').innerText = `$${prod.price.toFixed(2)}`;
+
+        const contenedorCaracteristicas = document.querySelector('.pm-features');
+        
+        if (prod.features && prod.features.length > 0) {
+            contenedorCaracteristicas.innerHTML = prod.features.map(caracteristica => 
+                `<div class="pm-feature-item">✅ ${caracteristica}</div>`
+            ).join('');
+        } else {
+            contenedorCaracteristicas.innerHTML = `
+                <div class="pm-feature-item">✅ Producto Original</div>
+                <div class="pm-feature-item">✅ Calidad Garantizada</div>
+            `;
+        }
+
+        document.getElementById('product-detail-modal').classList.add('open');
+    }
+
+    function cerrarDetalles() {
+        document.getElementById('product-detail-modal').classList.remove('open');
+    }
+
+    function cambiarCantidadModal(delta) {
+        if(cantidadModal + delta >= 1) {
+            cantidadModal += delta;
+            document.getElementById('pd-qty').innerText = cantidadModal;
+            const subtotal = cantidadModal * productoActualModal.price;
+            document.getElementById('pd-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+        }
+    }
+
+    // CORRECCIÓN CLAVE 3: Identificar en el carrito usando _id
+    function agregarDesdeModal() {
+        const idActual = productoActualModal._id || productoActualModal.id;
+        const inCart = cart.find(i => String(i._id || i.id) === String(idActual));
+        
+        if(inCart) {
+            inCart.qty += cantidadModal;
+        } else {
+            cart.push({...productoActualModal, qty: cantidadModal});
+        }
+        updateUI();
+        triggerMainAnim('anim-add');
+        cerrarDetalles();
+        mostrarToast(`✅ ${productoActualModal.name} al carrito`);
+    }
+
+    function toggleCart() {
+        document.getElementById('cart-panel').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('open');
+    }
+
+    function updateUI() {
+        const count = cart.reduce((s, i) => s + i.qty, 0);
+        document.getElementById('cart-count').innerText = count;
+        const container = document.getElementById('cart-items-container');
+        
+        if(cart.length === 0) {
+            container.innerHTML = '<p style="text-align:center; margin-top:20px;">Aún no has seleccionado nada.</p>';
+        } else {
+            container.innerHTML = cart.map(item => {
+                const itemId = item._id || item.id;
+                return `
+                <div class="cart-item">
+                    <img src="${item.img}" class="cart-item-img">
+                    <div style="flex-grow:1;">
+                        <div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
+                        <div style="font-size:0.8rem;">$${item.price.toFixed(2)} x ${item.qty}</div>
+                    </div>
+                    <button class="delete-btn" onclick="animarYEliminar(event, '${itemId}')">🗑️</button>
+                </div>
+                `
+            }).join('');
+        }
+        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        document.getElementById('cart-total-price').innerText = `$${total.toFixed(2)}`;
+    }
+
+    // CORRECCIÓN CLAVE 5: Filtro de eliminación usando _id
+    function animarYEliminar(event, idBuscado) {
+        const btn = event.target;
+        btn.classList.add('anim-papelera'); 
+        triggerMainAnim('anim-remove');    
+        
+        setTimeout(() => {
+            cart = cart.filter(i => String(i._id || i.id) !== String(idBuscado));
+            updateUI();
+        }, 450);
+    }
+
+    function triggerMainAnim(className) {
+        const target = document.getElementById('cart-icon-inner');
+        if(target) {
+            target.classList.remove('anim-add', 'anim-remove');
+            void target.offsetWidth; 
+            target.classList.add(className);
+            setTimeout(() => target.classList.remove(className), 400);
+        }
+    }
+
+    // --- LÓGICA DEL CHECKOUT INTELIGENTE ---
+    let metodoPagoSeleccionado = 'Pago Móvil';
+    let tipoEntregaSeleccionado = 'Entrega Presencial';
+
+    function abrirCheckout() {
+        if(cart.length === 0) return alert("Tu carrito está vacío.");
+        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        document.getElementById('chk-total').innerText = `$${total.toFixed(2)}`;
+        
+        toggleCart(); 
+        document.getElementById('checkout-modal').classList.add('open');
+        document.getElementById('menu-overlay').classList.add('active');
+    }
+
+    function cerrarCheckout() {
+        document.getElementById('checkout-modal').classList.remove('open');
+        document.getElementById('menu-overlay').classList.remove('active');
+    }
+
+    function seleccionarOpcion(grupo, btnElement, valor) {
+        const contenedor = grupo === 'pago' ?
+        document.getElementById('payment-options') : document.getElementById('delivery-options');
+        const botones = contenedor.getElementsByClassName('opt-btn');
+        
+        for(let btn of botones) { btn.classList.remove('active'); }
+        btnElement.classList.add('active');
+
+        if(grupo === 'pago') metodoPagoSeleccionado = valor;
+        else tipoEntregaSeleccionado = valor;
+    }
+
+    function enviarPedidoFinal() {
+        const nombre = document.getElementById('chk-nombre').value.trim();
+        const apellido = document.getElementById('chk-apellido').value.trim();
+        const telefono = document.getElementById('chk-telefono').value.trim();
+
+        if(!nombre || !apellido || !telefono) {
+            return alert("⚠️ Por favor, completa tu Nombre, Apellido y Teléfono para continuar.");
+        }
+
+        const lineas = [];
+        lineas.push(`¡Hola CONECTATECH! Soy *${nombre} ${apellido}* y quiero hacer este pedido:`);
+        lineas.push(""); 
+
+        cart.forEach(item => {
+            lineas.push(`- ${item.qty}x ${item.name} ($${item.price.toFixed(2)})`);
+        });
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+        lineas.push(""); 
+        lineas.push(`*TOTAL A PAGAR: $${total.toFixed(2)}*`);
+        lineas.push(`*Método de pago:* ${metodoPagoSeleccionado}`);
+        lineas.push(`*Tipo de entrega:* ${tipoEntregaSeleccionado}`);
+        lineas.push(`*Teléfono de contacto:* ${telefono}`);
+        
+        const mensajeFinal = encodeURIComponent(lineas.join('\n'));
+        window.open(`https://wa.me/584228959934?text=${mensajeFinal}`, '_blank');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // --- INICIO DE CARGA DE PRODUCTOS ---
+        const catalogo = document.getElementById('catalogo-container');
+        
+        // Ponemos a dar vueltas el circulito mientras Render despierta
+        catalogo.innerHTML = `
+            <div class="loader-container">
+                <div class="spinner"></div>
+                <div class="loader-text">Conectando con el catálogo...</div>
+                <div class="loader-sub">Organizando el inventario, esto puede tomar unos segundos ⏳</div>
+            </div>
+        `;
+
+         fetch('/productos')
+            .then(res => res.json())
+            .then(products => {
+                productosGlobales = products; 
+                renderProducts(); 
+            })
+            .catch(error => {
+                console.error('Error al cargar:', error);
+                catalogo.innerHTML = "<p style='color:red; text-align:center; padding: 40px;'>Error al cargar el inventario. Asegúrate de que el servidor esté encendido.</p>";
+            });
+
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const sidebar = document.getElementById('sidebar-menu');
+        const overlayMenu = document.getElementById('menu-overlay');
+
+        if (menuBtn && closeBtn && sidebar && overlayMenu) {
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                overlayMenu.classList.toggle('active');
+            }
+            menuBtn.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            overlayMenu.addEventListener('click', toggleMenu);
+        }
+    });
+</script>
+</body>
+</html>

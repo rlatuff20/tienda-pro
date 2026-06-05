@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONECTATECH | Panel de Control</title>
+    <link rel="icon" type="image/png" href="logoCT.png?v=2">
+    <style>
+        :root { --nike-black: #060606; --nike-gray: #e6f2ff; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background-color: var(--nike-gray); padding: 40px 20px; }
+        
+        /* Contenedor más ancho para soportar la tabla */
+        .box-container { max-width: 900px; margin: 30px auto; background: var(--white); padding: 30px; border-radius: 9px; border: 2px dashed var(--nike-black); overflow-x: auto; }
+        
+        /* Estilos del formulario en grilla */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        input, select, textarea { padding: 12px; border-radius: 6px; border: 1px solid #ccc; width: 100%; }
+        
+        .btn { padding: 12px; background-color: var(--nike-black); color: white; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        .btn-save { background-color: #007bff; grid-column: 1 / -1; }
+        
+        /* Estilos de la nueva tabla */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; }
+        th { background-color: #f1f1f1; color: var(--nike-black); }
+        .img-thumbnail { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc; }
+        
+        /* Botones de acción en la tabla */
+        .btn-accion { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
+        .btn-suma { background: #28a745; color: white; }
+        .btn-resta { background: #ffc107; color: black; }
+        .btn-eliminar { background: red; color: white; margin-left: 5px; }
+
+        .oculto { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="seccion-login" class="box-container" style="max-width: 400px;">
+        <h2>🔐 ACCESO RESTRINGIDO</h2>
+        <form id="form-login" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+            <input type="text" id="login-usuario" placeholder="Usuario" required>
+            <input type="password" id="login-password" placeholder="Contraseña" required>
+            <button type="submit" class="btn">Ingresar</button>
+        </form>
+    </div>
+
+    <div id="seccion-panel" class="box-container oculto">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>⚙️ Panel de Control - ConectaTech</h2>
+            <button onclick="cerrarSesion()" class="btn" style="background-color: #dc3545; padding: 8px 15px;">🔒 Cerrar Sesión</button>
+        </div>
+
+        <h3 style="border-left: 4px solid var(--nike-black); padding-left: 10px;">➕ Nuevo Producto</h3>
+        <form id="form-nuevo-producto" class="form-grid">
+            <input type="text" id="nuevo-nombre" placeholder="Nombre del accesorio" required>
+            <input type="text" id="nueva-categoria" placeholder="Categoría (Ej: Forros, Audífonos)" required>
+            <input type="number" id="nuevo-precio" step="0.01" placeholder="Precio ($)" required>
+            <input type="number" id="nuevo-stock" placeholder="Stock disponible" required>
+            <input type="text" id="nuevas-features" placeholder="Características (separadas por coma)" required style="grid-column: 1 / -1;">
+            
+            <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px;">
+                <label for="nueva-img" style="font-size: 14px; font-weight: bold;">Imagen del producto:</label>
+                <input type="file" id="nueva-img" accept="image/*" required>
+            </div>
+            
+            <button type="submit" class="btn btn-save">Guardar Producto</button>
+        </form>
+
+        <hr style="margin: 30px 0; border: 1px solid #ccc;">
+
+        <h3 style="border-left: 4px solid var(--nike-black); padding-left: 10px;">📦 Inventario Actual</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="lista-productos-admin">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("tokenAdmin")) mostrarPanel();
+        });
+
+        document.getElementById('form-login').addEventListener('submit', (e) => {
+            e.preventDefault();
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    usuario: document.getElementById('login-usuario').value, 
+                    password: document.getElementById('login-password').value 
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.exito) {
+                    localStorage.setItem("tokenAdmin", data.token);
+                    mostrarPanel();
+                } else { alert(data.mensaje); }
+            });
+        });
+
+        // NUEVA FORMA DE ENVIAR LOS DATOS (Soporta archivos)
+        document.getElementById('form-nuevo-producto').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('nuevo-nombre').value);
+            formData.append('category', document.getElementById('nueva-categoria').value.trim());
+            formData.append('price', document.getElementById('nuevo-precio').value);
+            formData.append('stock', document.getElementById('nuevo-stock').value);
+            formData.append('features', document.getElementById('nuevas-features').value);
+            
+            // Atrapamos el archivo de la foto
+            const archivoInput = document.getElementById('nueva-img');
+            formData.append('image', archivoInput.files[0]);
+
+            // Deshabilitar botón para evitar doble clic mientras sube
+            const btnGuardar = document.querySelector('.btn-save');
+            btnGuardar.textContent = "⏳ Subiendo...";
+            btnGuardar.disabled = true;
+
+            fetch('/productos', {
+                method: 'POST',
+                headers: {
+                    // OJO: Cuando usamos FormData NO se pone 'Content-Type', el navegador lo calcula solo.
+                    'Authorization': localStorage.getItem("tokenAdmin")
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => { 
+                alert(data.mensaje);
+                document.getElementById('form-nuevo-producto').reset();
+                cargarProductosAdmin();
+            })
+            .catch(err => console.error(err))
+            .finally(() => {
+                btnGuardar.textContent = "Guardar Producto";
+                btnGuardar.disabled = false;
+            });
+        });
+
+        function mostrarPanel() {
+            document.getElementById('seccion-login').classList.add('oculto');
+            document.getElementById('seccion-panel').classList.remove('oculto');
+            cargarProductosAdmin();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem("tokenAdmin");
+            location.reload();
+        }
+
+        // FUNCION ACTUALIZADA PARA DIBUJAR LA TABLA
+        function cargarProductosAdmin() {
+            fetch('/productos')
+            .then(res => res.json())
+            .then(productos => {
+                const tbody = document.getElementById('lista-productos-admin');
+                tbody.innerHTML = ''; 
+                
+                productos.forEach(producto => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${producto.img}" class="img-thumbnail" alt="${producto.name}"></td>
+                            <td><strong>${producto.name}</strong></td>
+                            <td style="text-transform: capitalize;">${producto.category}</td>
+                            <td>$${producto.price}</td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <button onclick="actualizarStock('${producto._id}', 'restar')" class="btn-accion btn-resta">-</button>
+                                    <span style="font-weight: bold; width: 20px; text-align: center;">${producto.stock}</span>
+                                    <button onclick="actualizarStock('${producto._id}', 'sumar')" class="btn-accion btn-suma">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <button onclick="borrarProducto('${producto._id}')" class="btn-accion btn-eliminar">🗑️ Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => console.error("Error al cargar inventario:", err));
+        }
+
+        function borrarProducto(idProducto) {
+            const seguro = confirm("¿Estás 100% seguro de que deseas eliminar este producto?");
+            if (seguro) {
+                fetch(`/productos/${idProducto}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': localStorage.getItem("tokenAdmin") }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.mensaje);
+                    cargarProductosAdmin(); 
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function actualizarStock(idProducto, accion) {
+            fetch(`/productos/${idProducto}/stock`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("tokenAdmin") 
+                },
+                body: JSON.stringify({ accion: accion })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.mensaje === "Stock actualizado") {
+                    cargarProductosAdmin(); 
+                } else {
+                    alert(data.mensaje); 
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
