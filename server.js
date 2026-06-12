@@ -76,10 +76,35 @@ app.post('/login', (req, res) => {
 
 app.get('/productos', async (req, res) => {
     try {
-        const productos = await Producto.find();
+        const productos = await Producto.find().sort({ category: 1, name: 1 });
         res.json(productos);
     } catch (err) {
         res.status(500).json({ mensaje: "Error al leer la base de datos" });
+    }
+});
+
+// RUTA DE ESTADÍSTICAS PARA EL DASHBOARD ADMIN
+app.get('/stats', async (req, res) => {
+    try {
+        const token = req.headers['authorization'];
+        if (token !== TOKEN_SECRETO) return res.status(401).json({ mensaje: "No autorizado" });
+
+        const totalProductos = await Producto.countDocuments();
+        const productos = await Producto.find();
+        const stockBajo = productos.filter(p => p.stock <= 3).length;
+        const sinStock = productos.filter(p => p.stock === 0).length;
+        const categoriasUnicas = [...new Set(productos.map(p => p.category))];
+        const valorInventario = productos.reduce((sum, p) => sum + (p.price * p.stock), 0);
+
+        res.json({
+            totalProductos,
+            stockBajo,
+            sinStock,
+            totalCategorias: categoriasUnicas.length,
+            valorInventario: valorInventario.toFixed(2)
+        });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al obtener estadísticas" });
     }
 });
 
@@ -139,6 +164,39 @@ app.delete('/productos/:id', async (req, res) => {
     }
 });
 
+// RUTA DE EDITAR PRODUCTO COMPLETO
+app.put('/productos/:id', upload.single('image'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers['authorization'];
+        if (token !== TOKEN_SECRETO) return res.status(403).json({ mensaje: "No autorizado." });
+
+        const producto = await Producto.findById(id);
+        if (!producto) return res.status(404).json({ mensaje: "Producto no encontrado" });
+
+        const { name, category, price, stock, features } = req.body;
+        if (name) producto.name = name;
+        if (category) producto.category = category;
+        if (price) producto.price = parseFloat(price);
+        if (stock !== undefined) producto.stock = parseInt(stock);
+        if (features) producto.features = features.split(',');
+        if (req.file) producto.img = req.file.path;
+
+        await producto.save();
+
+        const nuevoLog = new Historial({
+            accion: "EDITAR",
+            detalles: `Se editó el producto: ${producto.name}`
+        });
+        await nuevoLog.save();
+
+        res.json({ mensaje: "Producto actualizado con éxito", producto });
+    } catch (error) {
+        console.error("Error en PUT /productos/:id:", error);
+        res.status(500).json({ mensaje: "Error al editar el producto", error });
+    }
+});
+
 app.put('/productos/:id/stock', async (req, res) => {
     try {
         const { id } = req.params;
@@ -168,6 +226,19 @@ app.put('/productos/:id/stock', async (req, res) => {
         res.json({ mensaje: "Stock actualizado", stock: producto.stock });
     } catch (error) {
         res.status(500).json({ mensaje: "Error al actualizar el stock", error });
+    }
+});
+
+// RUTA DE HISTORIAL DE ACCIONES
+app.get('/historial', async (req, res) => {
+    try {
+        const token = req.headers['authorization'];
+        if (token !== TOKEN_SECRETO) return res.status(401).json({ mensaje: "No autorizado" });
+
+        const historial = await Historial.find().sort({ fecha: -1 }).limit(50);
+        res.json(historial);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener el historial", error });
     }
 });
 
