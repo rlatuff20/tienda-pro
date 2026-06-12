@@ -655,16 +655,15 @@
             closeBtn.addEventListener('click', toggleMenu);
             overlayMenu.addEventListener('click', toggleMenu);
         }
-        // --- CORRECCIÓN: Captura de ID mejorada ---
-const urlParams = new URLSearchParams(window.location.search);
-const idProducto = urlParams.get('id');
-
-if (idProducto) {
-    console.log("ID detectado:", idProducto);
-    // Esperamos un poco más para asegurar que los productos cargaron del servidor
+       // --- ESCANEO TOTAL DE URL ---
+const fullUrl = window.location.href;
+if (fullUrl.includes('?id=')) {
+    const idExtraido = fullUrl.split('?id=')[1].split('#')[0]; // Cortamos el # si existe
+    console.log("ID detectado:", idExtraido);
+    
     setTimeout(() => {
-        abrirDetalles(idProducto);
-    }, 1500);
+        abrirDetalles(idExtraido);
+    }, 2000); // Le damos más tiempo por si el internet en Cumaná está lento
 }
     });
     </script>
