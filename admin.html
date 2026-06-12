@@ -890,7 +890,7 @@
           <label for="loginPass">Contraseña</label>
           <div class="input-wrap">
             <input type="password" id="loginPass" class="dark-input" placeholder="Ingresa tu contraseña" required />
-            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Mostrar contraseña">👁️</button>
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Mostrar contraseña"><i class='bx bx-show'></i></button>
           </div>
         </div>
         <button type="submit" class="btn-login">Iniciar Sesión</button>
@@ -907,39 +907,39 @@
         <span>CONECTATECH</span>
       </div>
       <div class="nav-tabs">
-        <button class="nav-tab active" data-tab="inventario">📦 Inventario</button>
-        <button class="nav-tab" data-tab="nuevo">➕ Nuevo Producto</button>
-        <button class="nav-tab" data-tab="historial">📋 Historial</button>
+        <button class="nav-tab active" data-tab="inventario"><i class='bx bx-package'></i> Inventario</button>
+        <button class="nav-tab" data-tab="nuevo"><i class='bx bx-plus'></i> Nuevo Producto</button>
+        <button class="nav-tab" data-tab="historial"><i class='bx bx-list-ul'></i> Historial</button>
       </div>
-      <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión</button>
+      <button class="btn-logout" onclick="cerrarSesion()"><i class='bx bx-log-out'></i> Cerrar Sesión</button>
     </nav>
 
     <main class="main-content">
       <!-- Stats Row -->
       <div class="stats-row" id="statsRow">
         <div class="stat-card">
-          <div class="stat-icon blue">📦</div>
+          <div class="stat-icon blue"><i class='bx bx-package'></i></div>
           <div class="stat-info">
             <div class="stat-number accent" id="statTotal">–</div>
             <div class="stat-label">Total Productos</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon yellow">⚠️</div>
+          <div class="stat-icon yellow"><i class='bx bx-error-circle'></i></div>
           <div class="stat-info">
             <div class="stat-number warning" id="statBajo">–</div>
             <div class="stat-label">Stock Bajo (≤3)</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon red">🔴</div>
+          <div class="stat-icon red"><i class='bx bx-x-circle'></i></div>
           <div class="stat-info">
             <div class="stat-number danger" id="statSinStock">–</div>
             <div class="stat-label">Sin Stock</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon purple">🏷️</div>
+          <div class="stat-icon purple"><i class='bx bx-purchase-tag-alt'></i></div>
           <div class="stat-info">
             <div class="stat-number purple" id="statCategorias">–</div>
             <div class="stat-label">Categorías</div>
@@ -950,7 +950,7 @@
       <!-- ── Inventario Tab ── -->
       <div class="tab-content" id="tab-inventario">
         <div class="search-bar">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class='bx bx-search'></i></span>
           <input type="text" id="searchInput" placeholder="Buscar por nombre, categoría..." oninput="filtrarTabla()" />
         </div>
         <div class="table-wrap">
@@ -966,7 +966,7 @@
               </tr>
             </thead>
             <tbody id="tablaProductos">
-              <tr><td colspan="6" class="empty-state"><div class="empty-icon">📦</div><p>Cargando productos...</p></td></tr>
+              <tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-package'></i></div><p>Cargando productos...</p></td></tr>
             </tbody>
           </table>
         </div>
@@ -975,7 +975,7 @@
       <!-- ── Nuevo Producto Tab ── -->
       <div class="tab-content oculto" id="tab-nuevo">
         <div class="form-card">
-          <h2>➕ Agregar Nuevo Producto</h2>
+          <h2><i class='bx bx-plus'></i> Agregar Nuevo Producto</h2>
           <form id="formNuevo" enctype="multipart/form-data">
             <div class="form-grid">
               <div class="form-group">
@@ -1001,14 +1001,14 @@
               <div class="form-group full-width">
                 <label>Imagen del Producto</label>
                 <div class="drop-zone" id="dropZoneNew" onclick="document.getElementById('fileNew').click()">
-                  <div class="drop-icon">📁</div>
+                  <div class="drop-icon"><i class='bx bx-folder'></i></div>
                   <p>Arrastra una imagen aquí o <span>haz clic para seleccionar</span></p>
                 </div>
                 <input type="file" id="fileNew" name="image" accept="image/*" hidden />
                 <div class="img-preview-wrap oculto" id="previewNew"></div>
               </div>
             </div>
-            <button type="submit" class="btn-submit">🚀 Crear Producto</button>
+            <button type="submit" class="btn-submit"><i class='bx bx-rocket'></i> Crear Producto</button>
           </form>
         </div>
       </div>
@@ -1016,9 +1016,9 @@
       <!-- ── Historial Tab ── -->
       <div class="tab-content oculto" id="tab-historial">
         <div class="history-card">
-          <h2>📋 Historial de Actividad</h2>
+          <h2><i class='bx bx-list-ul'></i> Historial de Actividad</h2>
           <div class="timeline" id="timelineContainer">
-            <div class="empty-state"><div class="empty-icon">📋</div><p>Cargando historial...</p></div>
+            <div class="empty-state"><div class="empty-icon"><i class='bx bx-list-ul'></i></div><p>Cargando historial...</p></div>
           </div>
         </div>
       </div>
@@ -1028,7 +1028,7 @@
   <!-- ═══════════════════ EDIT MODAL ═══════════════════════ -->
   <div class="modal-overlay oculto" id="modalEditar" onclick="cerrarModalClick(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <h2>✏️ Editar Producto</h2>
+      <h2><i class='bx bx-pencil'></i> Editar Producto</h2>
       <form id="formEditar">
         <input type="hidden" id="editId" />
         <div class="form-grid">
@@ -1060,7 +1060,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-          <button type="submit" class="btn-save">💾 Guardar Cambios</button>
+          <button type="submit" class="btn-save"><i class='bx bx-save'></i> Guardar Cambios</button>
         </div>
       </form>
     </div>
@@ -1074,7 +1074,7 @@
     /* ── Toast Notifications ── */
     function showToast(msg, type = 'info') {
       const container = document.getElementById('toastContainer');
-      const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+      const icons = { success: '<i class='bx bx-check-circle'></i>', error: '<i class='bx bx-x'></i>', info: '<i class='bx bx-info-circle'></i>' };
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       toast.innerHTML = `<span>${icons[type] || ''}</span> ${msg}`;
@@ -1097,10 +1097,10 @@
       const btn = inp.nextElementSibling;
       if (inp.type === 'password') {
         inp.type = 'text';
-        btn.textContent = '🙈';
+        btn.textContent = '<i class='bx bx-hide'></i>';
       } else {
         inp.type = 'password';
-        btn.textContent = '👁️';
+        btn.textContent = '<i class='bx bx-show'></i>';
       }
     }
 
@@ -1203,14 +1203,14 @@
         renderTabla(productos);
       } catch {
         document.getElementById('tablaProductos').innerHTML =
-          '<tr><td colspan="6" class="empty-state"><div class="empty-icon">⚠️</div><p>Error al cargar productos</p></td></tr>';
+          '<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar productos</p></td></tr>';
       }
     }
 
     function renderTabla(productos) {
       const tbody = document.getElementById('tablaProductos');
       if (!productos.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-icon">📦</div><p>No hay productos registrados</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-package'></i></div><p>No hay productos registrados</p></td></tr>';
         return;
       }
       tbody.innerHTML = productos.map(p => {
@@ -1231,8 +1231,8 @@
             </td>
             <td>
               <div class="actions-cell">
-                <button class="btn-action edit" onclick="abrirEditarProducto('${p._id || p.id}')">✏️ Editar</button>
-                <button class="btn-action delete" onclick="borrarProducto('${p._id || p.id}')">🗑️ Eliminar</button>
+                <button class="btn-action edit" onclick="abrirEditarProducto('${p._id || p.id}')"><i class='bx bx-pencil'></i> Editar</button>
+                <button class="btn-action delete" onclick="borrarProducto('${p._id || p.id}')"><i class='bx bx-trash'></i> Eliminar</button>
               </div>
             </td>
           </tr>`;
@@ -1417,7 +1417,7 @@
         if (!res.ok) throw new Error();
         const historial = await res.json();
         if (!historial.length) {
-          container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No hay actividad registrada aún</p></div>';
+          container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class='bx bx-list-ul'></i></div><p>No hay actividad registrada aún</p></div>';
           return;
         }
         container.innerHTML = historial.map(h => {
@@ -1446,7 +1446,7 @@
             </div>`;
         }).join('');
       } catch {
-        container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error al cargar historial</p></div>';
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar historial</p></div>';
       }
     }
 

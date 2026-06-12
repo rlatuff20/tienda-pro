@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <style>
         /* ═══════════════════════════════════════════
@@ -607,15 +608,30 @@
            ═══════════════════════════════════════════ */
         .search-container {
             margin: 20px auto 8px auto;
-            text-align: center;
+            display: flex;
+            justify-content: center;
             padding: 0 20px;
             max-width: 1200px;
         }
 
-        #search-input {
+        .search-wrapper {
+            position: relative;
             width: 100%;
             max-width: 520px;
-            padding: 14px 24px;
+        }
+
+        .search-wrapper .bx-search {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 14px 24px 14px 46px;
             border-radius: var(--radius-pill);
             border: 1.5px solid rgba(0, 0, 0, 0.08);
             font-size: 0.95rem;
@@ -1690,13 +1706,13 @@
 
     <div class="top-bar">
         <div style="max-width: 1200px; margin: 0 auto; width: 100%;">
-            <span>💳 Pagos: Pago Móvil, Zelle, Binance | 📍 Entregas en Cumaná y envíos nacionales</span>
+            <span><i class='bx bx-credit-card'></i> Pagos: Pago Móvil, Zelle, Binance | <i class='bx bx-map'></i> Entregas en Cumaná y envíos nacionales</span>
         </div>
     </div>
 
     <header class="main-header">
         <div class="header-container">
-            <button id="menu-btn" class="icon-btn" aria-label="Abrir menú">☰</button>
+            <button id="menu-btn" class="icon-btn" aria-label="Abrir menú"><i class='bx bx-menu'></i></button>
             <a href="javascript:void(0)" class="logo">
                 <img src="./assets/img/logoCT.png?v=3" alt="ConectaTech" class="logo-tienda">
             </a>
@@ -1711,7 +1727,7 @@
                 </a>
 
                 <button class="cart-btn" onclick="toggleCart()" aria-label="Ver carrito">
-                    <span id="cart-icon-inner" style="display:inline-block;">🛒</span>
+                    <span id="cart-icon-inner" style="display:inline-block;"><i class='bx bx-shopping-bag'></i></span>
                     <span class="cart-badge" id="cart-count">0</span>
                 </button>
             </div>
@@ -1721,13 +1737,13 @@
     <!-- ════ HERO BANNER ════ -->
     <section class="hero-banner">
         <div class="hero-content">
-            <span class="hero-emoji">🚀</span>
+            <span class="hero-emoji"><i class='bx bx-rocket'></i></span>
             <h1 class="hero-title">Conectando tu mundo tecnológico</h1>
             <p class="hero-subtitle">Los mejores accesorios y periféricos con entrega directa en Cumaná y envíos a todo el país</p>
             <div class="hero-badges">
-                <span class="hero-badge">✅ Productos Certificados</span>
-                <span class="hero-badge">📦 Envíos Seguros</span>
-                <span class="hero-badge">💳 Todos los Pagos</span>
+                <span class="hero-badge"><i class='bx bx-check-circle'></i> Productos Certificados</span>
+                <span class="hero-badge"><i class='bx bx-package'></i> Envíos Seguros</span>
+                <span class="hero-badge"><i class='bx bx-credit-card'></i> Todos los Pagos</span>
             </div>
         </div>
     </section>
@@ -1742,36 +1758,39 @@
                     <div class="sidebar-brand-sub">Cumaná, Venezuela</div>
                 </div>
             </div>
-            <button id="close-btn" class="icon-btn" aria-label="Cerrar menú">✕</button>
+            <button id="close-btn" class="icon-btn" aria-label="Cerrar menú"><i class='bx bx-x'></i></button>
         </div>
         <div class="sidebar-label">Explorar Categorías</div>
         <ul class="category-list">
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Todas'); return false;"><span class="cat-icon">🔥</span> Todo el Catálogo</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cables Lightning y USB'); return false;"><span class="cat-icon">🔌</span> Cables Lightning y USB</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cubos y Cargadores'); return false;"><span class="cat-icon">⚡</span> Cubos y Cargadores</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Audifonos'); return false;"><span class="cat-icon">🎧</span> Audífonos</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Forros y Accesorios'); return false;"><span class="cat-icon">📱</span> Forros y Accesorios</a></li>
+            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Todas'); return false;"><span class="cat-icon"><i class='bx bx-grid-alt'></i></span> Todo el Catálogo</a></li>
+            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cables Lightning y USB'); return false;"><span class="cat-icon"><i class='bx bx-plug'></i></span> Cables Lightning y USB</a></li>
+            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cubos y Cargadores'); return false;"><span class="cat-icon"><i class='bx bx-bolt-circle'></i></span> Cubos y Cargadores</a></li>
+            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Audifonos'); return false;"><span class="cat-icon"><i class='bx bx-headphone'></i></span> Audífonos</a></li>
+            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Forros y Accesorios'); return false;"><span class="cat-icon"><i class='bx bx-mobile-alt'></i></span> Forros y Accesorios</a></li>
         </ul>
         <div class="sidebar-footer">
-            <a href="https://instagram.com/conectatechve" target="_blank" class="sidebar-social ig">📸 Instagram</a>
-            <a href="https://wa.me/584228959934" target="_blank" class="sidebar-social wa">💬 WhatsApp</a>
+            <a href="https://instagram.com/conectatechve" target="_blank" class="sidebar-social ig"><i class='bx bxl-instagram'></i> Instagram</a>
+            <a href="https://wa.me/584228959934" target="_blank" class="sidebar-social wa"><i class='bx bxl-whatsapp'></i> WhatsApp</a>
         </div>
     </div>
     <div id="menu-overlay" class="overlay-menu"></div>
 
     <!-- ════ SEARCH ════ -->
     <div class="search-container">
-        <input type="text" id="search-input" placeholder="🔍 Buscar producto..." onkeyup="buscarProductos()">
+        <div class="search-wrapper">
+            <i class='bx bx-search'></i>
+            <input type="text" id="search-input" placeholder="Buscar producto..." onkeyup="buscarProductos()">
+        </div>
     </div>
 
     <!-- ════ CATEGORY CHIPS ════ -->
     <div class="chips-container">
         <div class="chips-scroll" id="chips-bar">
-            <button class="chip active" onclick="chipClick(this, 'Todas')">🔥 Todo</button>
-            <button class="chip" onclick="chipClick(this, 'Cables Lightning y USB')">🔌 Cables</button>
-            <button class="chip" onclick="chipClick(this, 'Cubos y Cargadores')">⚡ Cargadores</button>
-            <button class="chip" onclick="chipClick(this, 'Audifonos')">🎧 Audífonos</button>
-            <button class="chip" onclick="chipClick(this, 'Forros y Accesorios')">📱 Forros</button>
+            <button class="chip active" onclick="chipClick(this, 'Todas')"><i class='bx bx-grid-alt'></i> Todo</button>
+            <button class="chip" onclick="chipClick(this, 'Cables Lightning y USB')"><i class='bx bx-plug'></i> Cables</button>
+            <button class="chip" onclick="chipClick(this, 'Cubos y Cargadores')"><i class='bx bx-bolt-circle'></i> Cargadores</button>
+            <button class="chip" onclick="chipClick(this, 'Audifonos')"><i class='bx bx-headphone'></i> Audífonos</button>
+            <button class="chip" onclick="chipClick(this, 'Forros y Accesorios')"><i class='bx bx-mobile-alt'></i> Forros</button>
         </div>
     </div>
 
@@ -1790,14 +1809,14 @@
             </div>
             <div class="footer-col">
                 <h4>Contacto</h4>
-                <p>📍 Entregas presenciales en Cumaná</p>
-                <p>📦 Envíos a nivel nacional</p>
-                <p>📱 WhatsApp: 0422-8959934</p>
+                <p><i class='bx bx-map'></i> Entregas presenciales en Cumaná</p>
+                <p><i class='bx bx-package'></i> Envíos a nivel nacional</p>
+                <p><i class='bx bx-mobile-alt'></i> WhatsApp: 0422-8959934</p>
             </div>
             <div class="footer-col">
                 <h4>Redes</h4>
-                <a href="https://instagram.com/conectatechve" target="_blank">📸 @conectatechve</a>
-                <a href="https://wa.me/584228959934" target="_blank">💬 WhatsApp Directo</a>
+                <a href="https://instagram.com/conectatechve" target="_blank"><i class='bx bxl-instagram'></i> @conectatechve</a>
+                <a href="https://wa.me/584228959934" target="_blank"><i class='bx bxl-whatsapp'></i> WhatsApp Directo</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1823,18 +1842,18 @@
             <div class="cart-total-row">
                 <span>Total Estimado:</span> <span id="cart-total-price">$0.00</span>
             </div>
-            <button class="btn-whatsapp" onclick="abrirCheckout()">💳 Ir a Pagar</button>
+            <button class="btn-whatsapp" onclick="abrirCheckout()"><i class='bx bx-credit-card'></i> Ir a Pagar</button>
         </div>
     </div>
 
     <!-- ════ PRODUCT DETAIL MODAL ════ -->
     <div id="product-detail-modal" class="product-modal">
-        <button class="pm-close" onclick="cerrarDetalles()" aria-label="Cerrar detalles">✕</button>
+        <button class="pm-close" onclick="cerrarDetalles()" aria-label="Cerrar detalles"><i class='bx bx-x'></i></button>
         <img id="pd-img" src="" class="pm-img" alt="Imagen del producto">
         <div class="pm-body">
             <div id="pd-title" class="pm-title">NOMBRE DEL PRODUCTO</div>
-            <div class="pm-badge">🛡️ PRODUCTOS CERTIFICADOS</div>
-            <div class="pm-section-title">🏷️ Opciones de precio</div>
+            <div class="pm-badge"><i class='bx bx-shield-quarter'></i> PRODUCTOS CERTIFICADOS</div>
+            <div class="pm-section-title"><i class='bx bx-purchase-tag-alt'></i> Opciones de precio</div>
             <div class="pm-price-box" id="pd-price-box">A partir de 1 U — $0.00</div>
             <div class="pm-section-title" style="margin-top: 20px;">Cantidad</div>
             <div class="pm-qty-container">
@@ -1849,21 +1868,21 @@
             </div>
             <div class="pm-section-title">CARACTERÍSTICAS</div>
             <div class="pm-features">
-                <div class="pm-feature-item">✅ Calidad Garantizada</div>
-                <div class="pm-feature-item">✅ Empaque Sellado</div>
-                <div class="pm-feature-item">✅ Entrega Segura</div>
+                <div class="pm-feature-item"><i class='bx bx-check-circle'></i> Calidad Garantizada</div>
+                <div class="pm-feature-item"><i class='bx bx-check-circle'></i> Empaque Sellado</div>
+                <div class="pm-feature-item"><i class='bx bx-check-circle'></i> Entrega Segura</div>
             </div>
         </div>
         <div class="pm-footer">
-            <button class="pm-add-btn" onclick="agregarDesdeModal()">🛒 Agregar al Carrito</button>
+            <button class="pm-add-btn" onclick="agregarDesdeModal()"><i class='bx bx-shopping-bag'></i> Agregar al Carrito</button>
         </div>
     </div>
 
     <!-- ════ CHECKOUT MODAL ════ -->
     <div id="checkout-modal" class="checkout-container">
         <div class="checkout-header">
-            <h3>🛒 DETALLES DE COMPRA</h3>
-            <button onclick="cerrarCheckout()" class="icon-btn" aria-label="Cerrar checkout">✕</button>
+            <h3><i class='bx bx-shopping-bag'></i> DETALLES DE COMPRA</h3>
+            <button onclick="cerrarCheckout()" class="icon-btn" aria-label="Cerrar checkout"><i class='bx bx-x'></i></button>
         </div>
         <div class="checkout-body">
             <div class="form-row">
@@ -1881,7 +1900,7 @@
                 <input type="text" id="chk-telefono" placeholder="04XX-XXXXXXX">
             </div>
 
-            <h4>💳 MÉTODO DE PAGO</h4>
+            <h4><i class='bx bx-credit-card'></i> MÉTODO DE PAGO</h4>
             <div class="payment-grid" id="payment-options">
                 <button class="opt-btn active" onclick="seleccionarOpcion('pago', this, 'Pago Móvil')">Pago Móvil</button>
                 <button class="opt-btn" onclick="seleccionarOpcion('pago', this, 'Efectivo $')">Efectivo $</button>
@@ -1889,10 +1908,10 @@
                 <button class="opt-btn" onclick="seleccionarOpcion('pago', this, 'Binance')">Binance</button>
             </div>
 
-            <h4>🚚 TIPO DE ENTREGA</h4>
+            <h4><i class='bx bx-truck'></i> TIPO DE ENTREGA</h4>
             <div class="delivery-grid" id="delivery-options">
-                <button class="opt-btn active" onclick="seleccionarOpcion('entrega', this, 'Entrega Presencial')">📍 Entrega Presencial</button>
-                <button class="opt-btn" onclick="seleccionarOpcion('entrega', this, 'Envío Nacional')">📦 Envío Nacional</button>
+                <button class="opt-btn active" onclick="seleccionarOpcion('entrega', this, 'Entrega Presencial')"><i class='bx bx-map'></i> Entrega Presencial</button>
+                <button class="opt-btn" onclick="seleccionarOpcion('entrega', this, 'Envío Nacional')"><i class='bx bx-package'></i> Envío Nacional</button>
             </div>
         </div>
         <div class="checkout-footer">
@@ -1900,7 +1919,7 @@
                 <span>Total a Pagar:</span>
                 <span id="chk-total">$0.00</span>
             </div>
-            <button class="btn-whatsapp-send" onclick="enviarPedidoFinal()">💬 Enviar Pedido por WhatsApp</button>
+            <button class="btn-whatsapp-send" onclick="enviarPedidoFinal()"><i class='bx bxl-whatsapp'></i> Enviar Pedido por WhatsApp</button>
         </div>
     </div>
 
@@ -2027,12 +2046,12 @@
 
         if (prod.features && prod.features.length > 0) {
             contenedorCaracteristicas.innerHTML = prod.features.map(caracteristica =>
-                `<div class="pm-feature-item">✅ ${caracteristica}</div>`
+                `<div class="pm-feature-item"><i class='bx bx-check-circle'></i> ${caracteristica}</div>`
             ).join('');
         } else {
             contenedorCaracteristicas.innerHTML = `
-                <div class="pm-feature-item">✅ Producto Original</div>
-                <div class="pm-feature-item">✅ Calidad Garantizada</div>
+                <div class="pm-feature-item"><i class='bx bx-check-circle'></i> Producto Original</div>
+                <div class="pm-feature-item"><i class='bx bx-check-circle'></i> Calidad Garantizada</div>
             `;
         }
 
@@ -2064,7 +2083,7 @@
         updateUI();
         triggerMainAnim('anim-add');
         cerrarDetalles();
-        mostrarToast(`✅ ${productoActualModal.name} al carrito`);
+        mostrarToast(`<i class='bx bx-check-circle'></i> ${productoActualModal.name} al carrito`);
     }
 
     function toggleCart() {
@@ -2089,7 +2108,7 @@
                         <div style="font-weight:700; font-size:0.85rem; margin-bottom:3px;">${item.name}</div>
                         <div style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">$${(item.price || 0).toFixed(2)} x ${item.qty}</div>
                     </div>
-                    <button class="delete-btn" onclick="animarYEliminar(event, '${itemId}')" aria-label="Eliminar ${item.name}">🗑️</button>
+                    <button class="delete-btn" onclick="animarYEliminar(event, '${itemId}')" aria-label="Eliminar ${item.name}"><i class='bx bx-trash'></i></button>
                 </div>
                 `
             }).join('');
@@ -2156,7 +2175,7 @@
         const telefono = document.getElementById('chk-telefono').value.trim();
 
         if(!nombre || !apellido || !telefono) {
-            return alert("⚠️ Por favor, completa tu Nombre, Apellido y Teléfono para continuar.");
+            return alert("<i class='bx bx-error-circle'></i> Por favor, completa tu Nombre, Apellido y Teléfono para continuar.");
         }
 
         const lineas = [];
