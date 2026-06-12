@@ -1033,6 +1033,7 @@
         <div class="form-card" style="margin-bottom: 24px;">
           <h3>Añadir Nueva Categoría</h3>
           <form id="formNuevaCategoria">
+            <input type="hidden" id="editCatId" value="">
             <div class="form-group">
               <label>Nombre de la Categoría</label>
               <input type="text" id="nuevaCatNombre" class="dark-input" placeholder="Ej: Smartwatches" required />
@@ -1089,7 +1090,7 @@
           </div>
           <div class="form-group">
             <label>Categoría</label>
-            <input type="text" class="dark-input" id="editCategoria" required />
+            <select id="editCategoria" class="dark-input" required><option value="">Cargando...</option></select>
           </div>
           <div class="form-group">
             <label>Precio ($)</label>
@@ -1247,6 +1248,7 @@
     }
 
     
+    
     let categoriasCache = [];
 
     async function cargarCategoriasAdmin() {
@@ -1276,7 +1278,8 @@
           <tr>
             <td><i class='bx ${c.icono}' style="font-size: 1.5rem;"></i></td>
             <td>${c.nombre}</td>
-            <td>
+            <td style="display: flex; gap: 8px;">
+              <button class="btn-action edit" onclick="prepararEdicionCategoria('${c._id}', '${c.nombre}', '${c.icono}')"><i class='bx bx-pencil'></i> Editar</button>
               <button class="btn-action delete" onclick="borrarCategoria('${c._id}')"><i class='bx bx-trash'></i> Eliminar</button>
             </td>
           </tr>
@@ -1287,32 +1290,59 @@
       }
     }
 
-    // Submit nueva categoría
-    const formCat = document.getElementById('formNuevaCategoria');
-    if(formCat) {
-      formCat.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const nombre = document.getElementById('nuevaCatNombre').value.trim();
-        const icono = document.getElementById('nuevaCatIcono').value;
-        try {
-          const res = await fetch('/categorias', {
-            method: 'POST',
-            headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, icono })
-          });
-          const data = await res.json();
-          if (res.ok) {
-            showToast('Categoría añadida', 'success');
-            document.getElementById('nuevaCatNombre').value = '';
-            cargarCategoriasAdmin();
-          } else {
-            showToast(data.mensaje || 'Error al añadir', 'error');
-          }
-        } catch (err) {
-          showToast('Error de conexión', 'error');
-        }
-      });
+    function prepararEdicionCategoria(id, nombre, icono) {
+        document.getElementById('editCatId').value = id;
+        document.getElementById('nuevaCatNombre').value = nombre;
+        document.getElementById('nuevaCatIcono').value = icono;
+        document.querySelector('#formNuevaCategoria .btn-submit').innerHTML = "<i class='bx bx-save'></i> Actualizar Categoría";
+        
+        // Scroll to the form
+        document.getElementById('formNuevaCategoria').scrollIntoView({ behavior: 'smooth' });
     }
+
+    function limpiarFormCategoria() {
+        document.getElementById('editCatId').value = '';
+        document.getElementById('nuevaCatNombre').value = '';
+        document.getElementById('nuevaCatIcono').value = 'bx-purchase-tag-alt';
+        document.querySelector('#formNuevaCategoria .btn-submit').innerHTML = "<i class='bx bx-plus'></i> Guardar Categoría";
+    }
+
+    // Usar DOMContentLoaded para asegurar que el DOM existe
+    document.addEventListener('DOMContentLoaded', () => {
+      const formCat = document.getElementById('formNuevaCategoria');
+      if(formCat) {
+        formCat.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const id = document.getElementById('editCatId').value;
+          const nombre = document.getElementById('nuevaCatNombre').value.trim();
+          const icono = document.getElementById('nuevaCatIcono').value;
+          
+          try {
+            const isEdit = id !== '';
+            const url = isEdit ? `/categorias/${id}` : '/categorias';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+              method: method,
+              headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nombre, icono })
+            });
+            const data = await res.json();
+            
+            if (res.ok) {
+              showToast(isEdit ? 'Categoría actualizada' : 'Categoría añadida', 'success');
+              limpiarFormCategoria();
+              cargarCategoriasAdmin();
+              cargarProductosAdmin(); // Refrescar tabla por si hubo cambios de nombre
+            } else {
+              showToast(data.mensaje || 'Error al guardar', 'error');
+            }
+          } catch (err) {
+            showToast('Error de conexión', 'error');
+          }
+        });
+      }
+    });
 
     async function borrarCategoria(id) {
       if (!confirm('¿Seguro que deseas eliminar esta categoría? Los productos dentro de ella pasarán a "Otros".')) return;
@@ -1324,11 +1354,15 @@
         if (res.ok) {
           showToast('Categoría eliminada', 'success');
           cargarCategoriasAdmin();
-          cargarProductosAdmin(); // Update product table since their categories might have changed to 'Otros'
+          cargarProductosAdmin(); 
         } else {
           showToast('Error al eliminar', 'error');
         }
       } catch (err) {
+        showToast('Error de conexión', 'error');
+      }
+    }
+ catch (err) {
         showToast('Error de conexión', 'error');
       }
     }
