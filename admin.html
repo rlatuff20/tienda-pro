@@ -910,7 +910,8 @@
       <div class="nav-tabs">
         <button class="nav-tab active" data-tab="inventario"><i class='bx bx-package'></i> Inventario</button>
         <button class="nav-tab" data-tab="nuevo"><i class='bx bx-plus'></i> Nuevo Producto</button>
-        <button class="nav-tab" data-tab="historial"><i class='bx bx-list-ul'></i> Historial</button>
+                <button class="nav-tab" data-tab="historial"><i class='bx bx-list-ul'></i> Historial</button>
+        <button class="nav-tab" data-tab="categorias"><i class='bx bx-purchase-tag-alt'></i> Categorías</button>
       </div>
       <button class="btn-logout" onclick="cerrarSesion()"><i class='bx bx-log-out'></i> Cerrar Sesión</button>
     </nav>
@@ -985,7 +986,7 @@
               </div>
               <div class="form-group">
                 <label>Categoría</label>
-                <input type="text" class="dark-input" name="category" placeholder="Ej: Audio" required />
+                <select class="dark-input" name="category" id="selectNuevoCategoria" required><option value="">Cargando...</option></select>
               </div>
               <div class="form-group">
                 <label>Precio ($)</label>
@@ -1112,6 +1113,7 @@
       cargarProductosAdmin();
       cargarStats();
       cargarHistorial();
+      cargarCategoriasAdmin();
     }
 
     function mostrarLogin() {
@@ -1169,6 +1171,7 @@
         el.style.animation = 'fadeIn 0.35s ease-out';
 
         if (target === 'historial') cargarHistorial();
+      cargarCategoriasAdmin();
         if (target === 'inventario') { cargarProductosAdmin(); cargarStats(); }
       });
     });
@@ -1193,6 +1196,94 @@
         // silently fail; cards keep placeholder
       }
     }
+
+    
+    let categoriasCache = [];
+
+    async function cargarCategoriasAdmin() {
+      try {
+        const res = await fetch('/categorias');
+        const categorias = await res.json();
+        categoriasCache = categorias;
+        
+        // Llenar selects
+        const selectNuevo = document.getElementById('selectNuevoCategoria');
+        const selectEdit = document.getElementById('editCategoria');
+        let options = '';
+        categorias.forEach(c => {
+          options += `<option value="${c.nombre}">${c.nombre}</option>`;
+        });
+        if(selectNuevo) selectNuevo.innerHTML = options;
+        if(selectEdit) selectEdit.innerHTML = options;
+
+        // Llenar tabla de categorías
+        const tbody = document.getElementById('tablaCategorias');
+        if(!tbody) return;
+        if (!categorias.length) {
+          tbody.innerHTML = `<tr><td colspan="3" class="empty-state">No hay categorías</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = categorias.map(c => `
+          <tr>
+            <td><i class='bx ${c.icono}' style="font-size: 1.5rem;"></i></td>
+            <td>${c.nombre}</td>
+            <td>
+              <button class="btn-action delete" onclick="borrarCategoria('${c._id}')"><i class='bx bx-trash'></i> Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+
+      } catch (err) {
+        console.error('Error al cargar categorias', err);
+      }
+    }
+
+    // Submit nueva categoría
+    const formCat = document.getElementById('formNuevaCategoria');
+    if(formCat) {
+      formCat.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nombre = document.getElementById('nuevaCatNombre').value.trim();
+        const icono = document.getElementById('nuevaCatIcono').value;
+        try {
+          const res = await fetch('/categorias', {
+            method: 'POST',
+            headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, icono })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast('Categoría añadida', 'success');
+            document.getElementById('nuevaCatNombre').value = '';
+            cargarCategoriasAdmin();
+          } else {
+            showToast(data.mensaje || 'Error al añadir', 'error');
+          }
+        } catch (err) {
+          showToast('Error de conexión', 'error');
+        }
+      });
+    }
+
+    async function borrarCategoria(id) {
+      if (!confirm('¿Seguro que deseas eliminar esta categoría? Los productos dentro de ella pasarán a "Otros".')) return;
+      try {
+        const res = await fetch(`/categorias/${id}`, {
+          method: 'DELETE',
+          headers: authHeaders()
+        });
+        if (res.ok) {
+          showToast('Categoría eliminada', 'success');
+          cargarCategoriasAdmin();
+          cargarProductosAdmin(); // Update product table since their categories might have changed to 'Otros'
+        } else {
+          showToast('Error al eliminar', 'error');
+        }
+      } catch (err) {
+        showToast('Error de conexión', 'error');
+      }
+    }
+
 
     /* ── Load Products ── */
     async function cargarProductosAdmin() {

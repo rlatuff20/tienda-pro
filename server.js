@@ -17,7 +17,10 @@ app.use(express.static(path.join(__dirname)));
 
 // 1. Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('¡Conectado a MongoDB Atlas!'))
+    .then(() => {
+        console.log('¡Conectado a MongoDB Atlas!');
+        inicializarCategorias();
+    })
     .catch(err => console.error('Error conectando a MongoDB:', err));
 
 // 2. Configuración de Cloudinary
@@ -54,6 +57,30 @@ const historialSchema = new mongoose.Schema({
     fecha: { type: Date, default: Date.now }
 });
 const Historial = mongoose.model('Historial', historialSchema);
+
+const categoriaSchema = new mongoose.Schema({
+    nombre: { type: String, required: true, unique: true },
+    icono: { type: String, default: 'bx-purchase-tag-alt' }
+});
+const Categoria = mongoose.model('Categoria', categoriaSchema);
+
+async function inicializarCategorias() {
+    try {
+        const count = await Categoria.countDocuments();
+        if (count === 0) {
+            await Categoria.insertMany([
+                { nombre: 'Cables Lightning y USB', icono: 'bx-plug' },
+                { nombre: 'Cubos y Cargadores', icono: 'bx-bolt-circle' },
+                { nombre: 'Audifonos', icono: 'bx-headphone' },
+                { nombre: 'Forros y Accesorios', icono: 'bx-mobile-alt' },
+                { nombre: 'Otros', icono: 'bx-package' }
+            ]);
+            console.log("Categorías inicializadas");
+        }
+    } catch (e) {
+        console.error("Error al inicializar categorías:", e);
+    }
+}
 
 const usuariosAdministradores = [
     { usuario: "admin", password: "udo2026" },
@@ -239,6 +266,56 @@ app.get('/historial', async (req, res) => {
         res.json(historial);
     } catch (error) {
         res.status(500).json({ mensaje: "Error al obtener el historial", error });
+    }
+});
+
+// --- RUTAS DE CATEGORÍAS ---
+app.get('/categorias', async (req, res) => {
+    try {
+        const categorias = await Categoria.find();
+        res.json(categorias);
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al leer categorías" });
+    }
+});
+
+app.post('/categorias', async (req, res) => {
+    try {
+        const token = req.headers['authorization'];
+        if (token !== TOKEN_SECRETO) return res.status(401).json({ mensaje: "No autorizado" });
+        
+        const { nombre, icono } = req.body;
+        if (!nombre) return res.status(400).json({ mensaje: "Falta el nombre" });
+        
+        const nuevaCat = new Categoria({ nombre, icono: icono || 'bx-purchase-tag-alt' });
+        await nuevaCat.save();
+        res.json({ exito: true, mensaje: "Categoría agregada", categoria: nuevaCat });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al crear categoría", error: err.message });
+    }
+});
+
+app.delete('/categorias/:id', async (req, res) => {
+    try {
+        const token = req.headers['authorization'];
+        if (token !== TOKEN_SECRETO) return res.status(401).json({ mensaje: "No autorizado" });
+
+        const cat = await Categoria.findById(req.params.id);
+        if(!cat) return res.status(404).json({ mensaje: "Categoría no encontrada" });
+
+        // Mover productos a 'Otros'
+        await Producto.updateMany({ category: cat.nombre }, { category: 'Otros' });
+        await Categoria.findByIdAndDelete(req.params.id);
+
+        const nuevaEntrada = new Historial({
+            accion: 'ELIMINAR CATEGORÍA',
+            detalles: `Eliminó la categoría: ${cat.nombre}. Los productos pasaron a 'Otros'.`
+        });
+        await nuevaEntrada.save();
+
+        res.json({ exito: true, mensaje: "Categoría eliminada" });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al eliminar categoría", error: err.message });
     }
 });
 

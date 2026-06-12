@@ -1761,12 +1761,8 @@
             <button id="close-btn" class="icon-btn" aria-label="Cerrar menú"><i class='bx bx-x'></i></button>
         </div>
         <div class="sidebar-label">Explorar Categorías</div>
-        <ul class="category-list">
+        <ul class="category-list" id="sidebar-categories">
             <li><a href="javascript:void(0)" onclick="filtrarCategoria('Todas'); return false;"><span class="cat-icon"><i class='bx bx-grid-alt'></i></span> Todo el Catálogo</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cables Lightning y USB'); return false;"><span class="cat-icon"><i class='bx bx-plug'></i></span> Cables Lightning y USB</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Cubos y Cargadores'); return false;"><span class="cat-icon"><i class='bx bx-bolt-circle'></i></span> Cubos y Cargadores</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Audifonos'); return false;"><span class="cat-icon"><i class='bx bx-headphone'></i></span> Audífonos</a></li>
-            <li><a href="javascript:void(0)" onclick="filtrarCategoria('Forros y Accesorios'); return false;"><span class="cat-icon"><i class='bx bx-mobile-alt'></i></span> Forros y Accesorios</a></li>
         </ul>
         <div class="sidebar-footer">
             <a href="https://instagram.com/conectatechve" target="_blank" class="sidebar-social ig"><i class='bx bxl-instagram'></i> Instagram</a>
@@ -1787,10 +1783,6 @@
     <div class="chips-container">
         <div class="chips-scroll" id="chips-bar">
             <button class="chip active" onclick="chipClick(this, 'Todas')"><i class='bx bx-grid-alt'></i> Todo</button>
-            <button class="chip" onclick="chipClick(this, 'Cables Lightning y USB')"><i class='bx bx-plug'></i> Cables</button>
-            <button class="chip" onclick="chipClick(this, 'Cubos y Cargadores')"><i class='bx bx-bolt-circle'></i> Cargadores</button>
-            <button class="chip" onclick="chipClick(this, 'Audifonos')"><i class='bx bx-headphone'></i> Audífonos</button>
-            <button class="chip" onclick="chipClick(this, 'Forros y Accesorios')"><i class='bx bx-mobile-alt'></i> Forros</button>
         </div>
     </div>
 
@@ -1929,6 +1921,25 @@
     <script>
       let cart = [];
       let productosGlobales = [];
+
+    let categoriasGlobales = [];
+
+    function renderCategoriasTienda() {
+        const chipsBar = document.getElementById('chips-bar');
+        const sidebarCats = document.getElementById('sidebar-categories');
+        
+        let chipsHTML = `<button class="chip active" onclick="chipClick(this, 'Todas')"><i class='bx bx-grid-alt'></i> Todo</button>`;
+        let sidebarHTML = `<li><a href="javascript:void(0)" onclick="filtrarCategoria('Todas'); return false;"><span class="cat-icon"><i class='bx bx-grid-alt'></i></span> Todo el Catálogo</a></li>`;
+        
+        categoriasGlobales.forEach(c => {
+            chipsHTML += `<button class="chip" onclick="chipClick(this, '${c.nombre}')"><i class='bx ${c.icono}'></i> ${c.nombre}</button>`;
+            sidebarHTML += `<li><a href="javascript:void(0)" onclick="filtrarCategoria('${c.nombre}'); return false;"><span class="cat-icon"><i class='bx ${c.icono}'></i></span> ${c.nombre}</a></li>`;
+        });
+        
+        if (chipsBar) chipsBar.innerHTML = chipsHTML;
+        if (sidebarCats) sidebarCats.innerHTML = sidebarHTML;
+    }
+
 
     // --- CHIP CLICK HANDLER ---
     function chipClick(btn, categoria) {
@@ -2220,6 +2231,15 @@
                 </div>
             </div>
         `;
+
+        
+        fetch('/categorias')
+            .then(res => res.json())
+            .then(cats => {
+                categoriasGlobales = cats;
+                renderCategoriasTienda();
+            })
+            .catch(err => console.error('Error al cargar categorias:', err));
 
         fetch('/productos')
             .then(res => res.json())
