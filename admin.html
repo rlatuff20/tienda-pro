@@ -1024,6 +1024,55 @@
           </div>
         </div>
       </div>
+      <!-- ── Categorías Tab ── -->
+      <section id="categorias-tab" class="tab-content">
+        <div class="header-action">
+          <h2><i class='bx bx-purchase-tag-alt'></i> Gestionar Categorías</h2>
+        </div>
+        
+        <div class="form-card" style="margin-bottom: 24px;">
+          <h3>Añadir Nueva Categoría</h3>
+          <form id="formNuevaCategoria">
+            <div class="form-group">
+              <label>Nombre de la Categoría</label>
+              <input type="text" id="nuevaCatNombre" class="dark-input" placeholder="Ej: Smartwatches" required />
+            </div>
+            <div class="form-group">
+              <label>Icono (Boxicons)</label>
+              <select id="nuevaCatIcono" class="dark-input" required>
+                <option value="bx-purchase-tag-alt">Etiqueta (Predeterminado)</option>
+                <option value="bx-mobile">Móvil / Celular</option>
+                <option value="bx-headphone">Audífonos</option>
+                <option value="bx-plug">Cable / Enchufe</option>
+                <option value="bx-bolt-circle">Energía / Cargador</option>
+                <option value="bx-laptop">Laptop / Computadora</option>
+                <option value="bx-game">Juegos</option>
+                <option value="bx-watch">Reloj Inteligente</option>
+                <option value="bx-camera">Cámara</option>
+                <option value="bx-mouse">Mouse</option>
+                <option value="bx-speaker">Parlante / Corneta</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-submit"><i class='bx bx-plus'></i> Guardar Categoría</button>
+          </form>
+        </div>
+
+        <div class="table-container">
+          <table class="dark-table">
+            <thead>
+              <tr>
+                <th>Icono</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaCategorias">
+              <tr><td colspan="3" class="empty-state"><p>Cargando categorías...</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </main>
   </section>
 
