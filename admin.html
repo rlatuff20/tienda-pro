@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <style>
     /* ── Reset & Base ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -917,21 +918,21 @@
     <main class="main-content">
       <!-- Stats Row -->
       <div class="stats-row" id="statsRow">
-        <div class="stat-card">
+        <div class="stat-card" onclick="filtrarPorEstado('total')" style="cursor: pointer;" title="Ver todos los productos">
           <div class="stat-icon blue"><i class='bx bx-package'></i></div>
           <div class="stat-info">
             <div class="stat-number accent" id="statTotal">–</div>
             <div class="stat-label">Total Productos</div>
           </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" onclick="filtrarPorEstado('bajo')" style="cursor: pointer;" title="Filtrar por stock bajo">
           <div class="stat-icon yellow"><i class='bx bx-error-circle'></i></div>
           <div class="stat-info">
             <div class="stat-number warning" id="statBajo">–</div>
             <div class="stat-label">Stock Bajo (≤3)</div>
           </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" onclick="filtrarPorEstado('sin-stock')" style="cursor: pointer;" title="Filtrar sin stock">
           <div class="stat-icon red"><i class='bx bx-x-circle'></i></div>
           <div class="stat-info">
             <div class="stat-number danger" id="statSinStock">–</div>
@@ -1248,6 +1249,25 @@
         p.category.toLowerCase().includes(q)
       );
       renderTabla(filtered);
+    }
+
+    function filtrarPorEstado(estado) {
+      if (estado === 'total') {
+        renderTabla(productosCache);
+      } else if (estado === 'bajo') {
+        renderTabla(productosCache.filter(p => p.stock > 0 && p.stock <= 3));
+      } else if (estado === 'sin-stock') {
+        renderTabla(productosCache.filter(p => p.stock === 0));
+      }
+      document.getElementById('searchInput').value = '';
+      
+      // Ir a la pestaña de inventario
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      const invTab = document.querySelector('.nav-tab[data-tab="inventario"]');
+      if(invTab) invTab.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      const invContent = document.getElementById('inventario-tab');
+      if(invContent) invContent.classList.add('active');
     }
 
     /* ── Stock Update ── */
