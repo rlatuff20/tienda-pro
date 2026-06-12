@@ -655,14 +655,16 @@
             closeBtn.addEventListener('click', toggleMenu);
             overlayMenu.addEventListener('click', toggleMenu);
         }
-        // Verificar si viene un ID en la URL al cargar
-const params = new URLSearchParams(window.location.search);
-const idProducto = params.get('id');
+        // --- CORRECCIÓN: Captura de ID mejorada ---
+const urlParams = new URLSearchParams(window.location.search);
+const idProducto = urlParams.get('id');
+
 if (idProducto) {
-    // Esperar un poquito a que carguen los productos y abrir el modal
+    console.log("ID detectado:", idProducto);
+    // Esperamos un poco más para asegurar que los productos cargaron del servidor
     setTimeout(() => {
         abrirDetalles(idProducto);
-    }, 1000);
+    }, 1500);
 }
     });
     </script>
