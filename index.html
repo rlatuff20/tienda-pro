@@ -289,13 +289,20 @@
            HERO BANNER
            ═══════════════════════════════════════════ */
         .hero-banner {
-            background: var(--accent-gradient);
+            background: linear-gradient(-45deg, #0a0a0a, #1a1a2e, #14141e, #2d2d3a);
+            background-size: 400% 400%;
             padding: 40px 20px 36px;
             text-align: center;
             color: white;
             position: relative;
             overflow: hidden;
-            animation: heroFadeIn 0.6s var(--ease-premium);
+            animation: heroFadeIn 0.6s var(--ease-premium), gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .hero-banner::before {
