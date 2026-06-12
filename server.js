@@ -175,3 +175,26 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+app.get('/sitemap.xml', async (req, res) => {
+    try {
+        const productos = await Producto.find();
+        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+        
+        // La URL base de tu tienda
+        const baseUrl = 'https://conectatech.onrender.com';
+        
+        // Agregar la página principal
+        xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <changefreq>daily</changefreq>\n  </url>\n`;
+
+        // Agregar cada producto
+        productos.forEach(p => {
+            xml += `  <url>\n    <loc>${baseUrl}/?id=${p._id}</loc>\n    <lastmod>${new Date().toISOString()}</lastmod>\n  </url>\n`;
+        });
+
+        xml += '</urlset>';
+        res.header('Content-Type', 'application/xml');
+        res.send(xml);
+    } catch (err) {
+        res.status(500).send("Error generando sitemap");
+    }
+});
