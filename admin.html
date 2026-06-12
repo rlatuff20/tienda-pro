@@ -1074,7 +1074,7 @@
     /* ── Toast Notifications ── */
     function showToast(msg, type = 'info') {
       const container = document.getElementById('toastContainer');
-      const icons = { success: '<i class='bx bx-check-circle'></i>', error: '<i class='bx bx-x'></i>', info: '<i class='bx bx-info-circle'></i>' };
+      const icons = { success: "<i class='bx bx-check-circle'></i>", error: "<i class='bx bx-x'></i>", info: "<i class='bx bx-info-circle'></i>" };
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       toast.innerHTML = `<span>${icons[type] || ''}</span> ${msg}`;
@@ -1097,10 +1097,10 @@
       const btn = inp.nextElementSibling;
       if (inp.type === 'password') {
         inp.type = 'text';
-        btn.textContent = '<i class='bx bx-hide'></i>';
+        btn.innerHTML = "<i class='bx bx-hide'></i>";
       } else {
         inp.type = 'password';
-        btn.textContent = '<i class='bx bx-show'></i>';
+        btn.innerHTML = "<i class='bx bx-show'></i>";
       }
     }
 
@@ -1203,14 +1203,14 @@
         renderTabla(productos);
       } catch {
         document.getElementById('tablaProductos').innerHTML =
-          '<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar productos</p></td></tr>';
+          `<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar productos</p></td></tr>`;
       }
     }
 
     function renderTabla(productos) {
       const tbody = document.getElementById('tablaProductos');
       if (!productos.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-package'></i></div><p>No hay productos registrados</p></td></tr>';
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><div class="empty-icon"><i class='bx bx-package'></i></div><p>No hay productos registrados</p></td></tr>`;
         return;
       }
       tbody.innerHTML = productos.map(p => {
@@ -1417,7 +1417,7 @@
         if (!res.ok) throw new Error();
         const historial = await res.json();
         if (!historial.length) {
-          container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class='bx bx-list-ul'></i></div><p>No hay actividad registrada aún</p></div>';
+          container.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class='bx bx-list-ul'></i></div><p>No hay actividad registrada aún</p></div>`;
           return;
         }
         container.innerHTML = historial.map(h => {
@@ -1446,7 +1446,7 @@
             </div>`;
         }).join('');
       } catch {
-        container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar historial</p></div>';
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class='bx bx-error-circle'></i></div><p>Error al cargar historial</p></div>`;
       }
     }
 
